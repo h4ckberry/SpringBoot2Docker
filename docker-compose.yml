@@ -1,0 +1,25 @@
+version: "3.2"
+services:
+  mysql:
+    build: ./mysql
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=sample
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=passw0rd
+      - TZ=Japan
+    #ports:
+    #  - "3306:3306"
+
+  java:
+    build: ./webapp
+    container_name: java
+    restart: always
+    ports:
+      - 8080:8080 # ホストからデバッグできるようにポートフォーワード
+    tty: true
+    volumes:
+      - ./spring-boot-doma2-sample/:/usr/src/spring-boot-doma2-sample/
+    depends_on:
+      - mysql
